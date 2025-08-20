@@ -1,4 +1,4 @@
-itle: MS Office Drops Suspicious Files (via file_event)
+title: MS Office Drops Suspicious Files (via file_event)
 status: stable
 description: MS Office products drop suspicious files, such as scripts, portable executable files (.dll or .exe), and other file types commonly used to exploit vulnerabilities or perform post-exploitation activities through MS Office products.
 references:
