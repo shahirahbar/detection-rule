@@ -1,0 +1,22 @@
+[MS Office Drops Suspicious Files (via file_event)]
+alert.severity = 3
+description = MS Office products drop suspicious files, such as scripts, portable executable files (.dll or .exe), and other file types commonly used to exploit vulnerabilities or perform post-exploitation activities through MS Office products.
+cron_schedule = 0 * * * *
+disabled = 1
+is_scheduled = 1
+is_visible = 1
+dispatch.earliest_time = -60m@m
+dispatch.latest_time = now
+search = index=* source="WinEventLog:*" AND (((Image="*WINWORD.EXE" OR Image="*EXCEL.EXE" OR Image="*POWERPNT.EXE" OR Image="*MSPUB.EXE" OR Image="*VISIO.EXE" OR Image="*OUTLOOK.EXE") AND (TargetFilename="*.library-ms" OR TargetFilename="*.msc" OR TargetFilename="*.rtf" OR TargetFilename="*.mdb" OR TargetFilename="*.accdb" OR TargetFilename="*.accde" OR TargetFilename="*.mmp" OR TargetFilename="*.rdp" OR TargetFilename="*.chm" OR TargetFilename="*.dot" OR TargetFilename="*.jse" OR TargetFilename="*.bat" OR TargetFilename="*.sct" OR TargetFilename="*.url" OR TargetFilename="*.cmd" OR TargetFilename="*.hta" OR TargetFilename="*.htm" OR TargetFilename="*.ps1" OR TargetFilename="*.js" OR TargetFilename="*.vbs" OR TargetFilename="*.dll" OR TargetFilename="*.exe" OR TargetFilename="*.one" OR TargetFilename="*.onepkg" OR TargetFilename="*.bz2" OR TargetFilename="*.gzip" OR TargetFilename="*.au3")) AND NOT ((TargetFilename="*\\AC\\Temp\\*") AND (TargetFilename="*\\Local\\Packages\\*") OR (TargetFilename="*SmartLookupCache*") AND (TargetFilename="*microsoft.office.smartlookup.ssr.js*") OR (TargetFilename="*INetCache*") AND (TargetFilename="*].js*") OR (TargetFilename="*Content*") AND (TargetFilename="*IE*") AND (TargetFilename="*].js*") OR (TargetFilename="*\\~$*" OR TargetFilename="*\\Setup[1].exe*" OR TargetFilename="*NewOutlookInstall*" OR TargetFilename="*\\Temp\\OICE_*" OR TargetFilename="*INetCache\\Content.MSO*" OR TargetFilename="*\\Javascript\\*" OR TargetFilename="*\\assembly\\tmp\\*" OR TargetFilename="*Temp\\hpcUK*" OR TargetFilename="*\\EPSON*")))
+alert.suppress = 0
+alert.track = 1
+actions = risk,notable
+action.risk = 1
+action.risk.param._risk_object_type = user
+action.risk.param._risk_score = 50
+action.correlationsearch = 0
+action.correlationsearch.enabled = 1
+action.notable.param.rule_title = MS Office Drops Suspicious Files (via file_event)
+action.notable.param.rule_description = MS Office products drop suspicious files, such as scripts, portable executable files (.dll or .exe), and other file types commonly used to exploit vulnerabilities or perform post-exploitation activities through MS Office products. (Rule ID: ed8cb3fa-b30c-4f27-82ce-84899db4807c)
+action.correlationsearch.label = MS Office Drops Suspicious Files (via file_event)
+action.correlationsearch.annotations = {"mitre_attack": ["T1203", "T1566.001"]}
