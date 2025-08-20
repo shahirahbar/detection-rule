@@ -1,0 +1,31 @@
+title: Suspicious IEdiagcmd Child Process (via cmdline)
+status: stable
+description: Identifies unusual iediagcmd child process, which may be an indicator of malicious activity.
+author: shahirahbar
+references:
+- https://research.checkpoint.com/2025/stealth-falcon-zero-day/
+- https://github.com/elastic/detection-rules/blob/main/rules/windows/initial_access_url_cve_2025_33053.toml
+tags:
+- attack.t1218
+- attack.defense_evasion
+logsource:
+category: process_creation
+product: windows
+detection:
+selection:
+ParentImage|endswith: 'iediagcmd.exe'
+Image|endswith:
+- 'route.exe'
+- 'netsh.exe'
+- 'ipconfig.exe'
+- 'dxdiag.exe'
+- 'conhost.exe'
+- 'makecab.exe'
+filters:
+Image|contains:
+- 'system32'
+- 'syswow64'
+condition: selection and not filters
+falsepositives:
+- Unknown
+level: medium
