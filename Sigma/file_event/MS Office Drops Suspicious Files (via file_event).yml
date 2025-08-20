@@ -1,0 +1,98 @@
+itle: MS Office Drops Suspicious Files (via file_event)
+status: stable
+description: MS Office products drop suspicious files, such as scripts, portable executable files (.dll or .exe), and other file types commonly used to exploit vulnerabilities or perform post-exploitation activities through MS Office products.
+references:
+    - https://cloud.google.com/blog/topics/threat-intelligence/windows-rogue-remote-desktop-protocol/
+    - https://github.com/Marcejr117/CVE-2025-24071_PoC
+    - https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2025-21298
+    - https://cert.gov.ua/article/6281076
+    - https://cert.gov.ua/article/6280159
+    - https://jp.security.ntt/tech_blog/controlplug
+    - https://app.any.run/tasks/80d106e5-c197-4afe-80d4-c3722fef3db4
+    - https://www.infosecurity-magazine.com/news/signature-techniques-of-asian-apt/
+    - https://research.checkpoint.com/2023/abusing-microsoft-access-linked-table-feature-to-perform-ntlm-forced-authentication-attacks/
+    - https://isc.sans.edu/diary/rss/30384
+    - https://cert.gov.ua/article/5628441
+    - https://twitter.com/sbousseaden/status/1216763679741530113
+    - https://success.trendmicro.com/dcx/s/solution/1123612-cve-2017-8570-vulnerability-downloads-high-profile-malware
+    - https://medium.com/@asmcybersecurity/cve-2017-8570-designates-a-security-flaw-found-in-microsoft-office-particularly-in-its-handling-of-cfc0d10cb233
+    - https://0xsp.com/offensive/navigating-embedded-payload-extraction-from-rdp-files-defence-evasion/
+    - https://cert.gov.ua/article/5391805
+    - https://cert.gov.ua/article/5098518
+    - https://cert.gov.ua/article/4905718
+    - https://news.sophos.com/en-us/2023/02/06/qakbot-onenote-attacks/
+    - https://www.trustedsec.com/blog/new-attacks-old-tricks-how-onenote-malware-is-evolving/
+    - https://www.rapid7.com/blog/post/2023/01/31/rapid7-observes-use-of-microsoft-onenote-to-spread-redline-infostealer-malware/
+    - https://cert.gov.ua/article/861292
+    - https://cert.gov.ua/article/619229
+    - https://cert.gov.ua/article/39882
+    - https://cert.gov.ua/article/39708
+    - https://cert.gov.ua/article/39609
+author: shahirahbar
+tags:
+    - attack.t1203
+    - attack.execution
+    - attack.t1566.001
+    - attack.initial_access
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - 'WINWORD.EXE'
+            - 'EXCEL.EXE'
+            - 'POWERPNT.EXE'
+            - 'MSPUB.EXE'
+            - 'VISIO.EXE'
+            - 'OUTLOOK.EXE'
+        TargetFilename|endswith:
+            - '.library-ms' #CVE-2025-24071; https://medium.com/@mhwee/unmasking-windows-library-files-a-deep-dive-into-client-side-exploitation-6bf3371a5262
+            - '.msc'
+            - '.rtf' #possible CVE-2025-21298, if patches are not installed.
+            - '.mdb'
+            - '.accdb'
+            - '.accde'
+            - '.mmp' #Phishing Campaign Project File https://isc.sans.edu/diary/rss/30384
+            - '.rdp'
+            - '.chm'
+            - '.dot'
+            - '.jse'
+            - '.bat'
+            - '.sct' #possible CVE-2017-8570, if patches are not installed.
+            - '.url'
+            - '.cmd'
+            - '.hta'
+            - '.htm'
+            - '.ps1'
+            - '.js' #noizy.
+            - '.vbs'
+            - '.dll' #C:\Windows\Tasks\pe.dll
+            - '.exe' #C:\Users\admin\AppData\Local\Temp\base_update.exe
+            - '.one' #drops onenote files.
+            - '.onepkg'
+            - '.bz2'
+            - '.gzip'
+            - '.au3'
+    filters:
+        - TargetFilename|contains|all:
+            - '\AC\Temp\'
+            - '\Local\Packages\'
+        - TargetFilename|contains|all:
+            - 'SmartLookupCache'
+            - 'microsoft.office.smartlookup.ssr.js'
+        - TargetFilename|contains|all:
+            - 'INetCache'
+            #- 'IE'
+            - '].js'
+        - TargetFilename|contains|all:
+            - 'Content'
+            - 'IE'
+            - '].js'
+        - TargetFilename|contains:
+            - '\~$' #temp files (editing)
+            - '\Setup[1].exe'
+            - 'NewOutlookInstall' #\AppData\Local\Temp\NewOutlookInstall\NewOutlookInstaller.exe updates.
+            - '\Temp\OICE_'
+            - 'INetCache\Content.MSO' #...\AppData\Local\Microsoft\Windows\INetCache\Content.MSO\3FC8F99F.dot
+            - '\Javascrip
