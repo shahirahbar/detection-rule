@@ -15,20 +15,4 @@ This repository contains rules and queries in the following formats:
 
 Each detection is paired with its corresponding raw search query, allowing for immediate deployment, testing, and customization.
 
-## 🚀 Quick Start
 
-1.  **Clone the Repository**
-    ```bash
-    git clone https://github.com/your_username/your_repository.git
-    cd your_repository
-    ```
-
-2.  **Navigate to the Desired Directory**
-    The rules are organized by format and threat category (e.g., `sigma/`, `eql/`, `spl/`).
-
-3.  **Deploy a Rule**
-    *   **For Sigma:** Convert a `.yml` rule to your SIEM's syntax using Sigmac and then deploy.
-    *   **For Elastic:** Import an EQL rule directly into your Elastic Security detection rules list.
-    *   **For Splunk:** Copy the SPL query from a `.spl` or `.txt` file and paste it into a new Splunk alert or dashboard panel.
-
-## 📁 Repository Structure
