@@ -1,0 +1,56 @@
+{
+"description": "Identifies unusual iediagcmd child process, which may be an indicator of malicious activity.",
+"author": [
+"shahirahbar",
+],
+"enabled": true,
+"false_positives": [
+"Unknown"
+],
+"filters": [],
+"from": "now-360s",
+"immutable": false,
+"index": [
+"winlogbeat-*"
+],
+"interval": "5m",
+"rule_id": "a00a0595-d9ac-41ac-bb33-49fc9bf17eff-eql",
+"language": "eql",
+"output_index": ".siem-signals-default",
+"max_signals": 100,
+"risk_score": 35,
+"name": "Suspicious IEdiagcmd Child Process (via cmdline)",
+"query": "process where (event.category : \"process\" and (process.parent.executable : \"*iediagcmd.exe\" and process.executable : (\"*route.exe\", \"*netsh.exe\", \"*ipconfig.exe\", \"*dxdiag.exe\", \"*conhost.exe\", \"*makecab.exe\")) and not process.executable : (\"*system32*\", \"*syswow64*\"))",
+"meta": {
+"from": "1m"
+},
+"severity": "medium",
+"tags": [
+"Defense Evasion",
+"T1218"
+],
+"to": "now",
+"type": "eql",
+"threat": [
+{
+"tactic": {
+"id": "TA0005",
+"reference": "https://attack.mitre.org/tactics/TA0005",
+"name": "Defense Evasion"
+},
+"framework": "MITRE ATT&CK",
+"technique": [
+{
+"id": "T1218",
+"name": "System Binary Proxy Execution",
+"reference": "https://attack.mitre.org/techniques/T1218"
+}
+]
+}
+],
+"version": 1,
+"references": [
+"https://research.checkpoint.com/2025/stealth-falcon-zero-day/",
+"https://github.com/elastic/detection-rules/blob/main/rules/windows/initial_access_url_cve_2025_33053.toml"
+]
+}
