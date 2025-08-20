@@ -1,1 +1,97 @@
-{"description":"MS Office products drop suspicious files, such as scripts, portable executable files (.dll or .exe), and other file types commonly used to exploit vulnerabilities or perform post-exploitation activities through MS Office products.","author":["SOC Prime Team"],"enabled":true,"false_positives":["medium. need to check user/office activity.","need additional filtering."],"filters":[],"from":"now-360s","immutable":false,"index":["winlogbeat-*"],"interval":"5m","rule_id":"ed8cb3fa-b30c-4f27-82ce-84899db4807c-eql","language":"eql","output_index":".siem-signals-default","max_signals":100,"risk_score":35,"name":"MS Office Drops Suspicious Files (via file_event)","query":"any where (event.category : \"file\" and (process.executable : (\"*WINWORD.EXE\", \"*EXCEL.EXE\", \"*POWERPNT.EXE\", \"*MSPUB.EXE\", \"*VISIO.EXE\", \"*OUTLOOK.EXE\") and file.path : (\"*.library-ms\", \"*.msc\", \"*.rtf\", \"*.mdb\", \"*.accdb\", \"*.accde\", \"*.mmp\", \"*.rdp\", \"*.chm\", \"*.dot\", \"*.jse\", \"*.bat\", \"*.sct\", \"*.url\", \"*.cmd\", \"*.hta\", \"*.htm\", \"*.ps1\", \"*.js\", \"*.vbs\", \"*.dll\", \"*.exe\", \"*.one\", \"*.onepkg\", \"*.bz2\", \"*.gzip\", \"*.au3\")) and  not (file.path : \"*\\\\AC\\\\Temp\\\\*\" and file.path : \"*\\\\Local\\\\Packages\\\\*\" or file.path : \"*SmartLookupCache*\" and file.path : \"*microsoft.office.smartlookup.ssr.js*\" or file.path : \"*INetCache*\" and file.path : \"*].js*\" or file.path : \"*Content*\" and file.path : \"*IE*\" and file.path : \"*].js*\" or file.path : (\"*\\\\~$*\", \"*\\\\Setup[1].exe*\", \"*NewOutlookInstall*\", \"*\\\\Temp\\\\OICE_*\", \"*INetCache\\\\Content.MSO*\", \"*\\\\Javascript\\\\*\", \"*\\\\assembly\\\\tmp\\\\*\", \"*Temp\\\\hpcUK*\", \"*\\\\EPSON*\")))","meta":{"from":"1m"},"severity":"medium","tags":["Initial Access","T1203","T1566"],"to":"now","type":"eql","threat":[{"tactic":{"id":"TA0001","reference":"https://attack.mitre.org/tactics/TA0001","name":"Initial Access"},"framework":"MITRE ATT&CK","technique":[{"id":"T1566","name":"Phishing","reference":"https://attack.mitre.org/techniques/T1566"}]},{"tactic":{"id":"TA0002","reference":"https://attack.mitre.org/tactics/TA0002","name":"Execution"},"framework":"MITRE ATT&CK","technique":[{"id":"T1203","name":"Exploitation for Client Execution","reference":"https://attack.mitre.org/techniques/T1203"}]}],"version":1,"references":["https://cloud.google.com/blog/topics/threat-intelligence/windows-rogue-remote-desktop-protocol/","https://github.com/Marcejr117/CVE-2025-24071_PoC","https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2025-21298","https://cert.gov.ua/article/6281076","https://cert.gov.ua/article/6280159","https://jp.security.ntt/tech_blog/controlplug","https://app.any.run/tasks/80d106e5-c197-4afe-80d4-c3722fef3db4","https://www.infosecurity-magazine.com/news/signature-techniques-of-asian-apt/","https://research.checkpoint.com/2023/abusing-microsoft-access-linked-table-feature-to-perform-ntlm-forced-authentication-attacks/","https://isc.sans.edu/diary/rss/30384","https://cert.gov.ua/article/5628441","https://twitter.com/sbousseaden/status/1216763679741530113","https://success.trendmicro.com/dcx/s/solution/1123612-cve-2017-8570-vulnerability-downloads-high-profile-malware","https://medium.com/@asmcybersecurity/cve-2017-8570-designates-a-security-flaw-found-in-microsoft-office-particularly-in-its-handling-of-cfc0d10cb233","https://0xsp.com/offensive/navigating-embedded-payload-extraction-from-rdp-files-defence-evasion/","https://cert.gov.ua/article/5391805","https://cert.gov.ua/article/5098518","https://cert.gov.ua/article/4905718","https://news.sophos.com/en-us/2023/02/06/qakbot-onenote-attacks/","https://www.trustedsec.com/blog/new-attacks-old-tricks-how-onenote-malware-is-evolving/","https://www.rapid7.com/blog/post/2023/01/31/rapid7-observes-use-of-microsoft-onenote-to-spread-redline-infostealer-malware/","https://cert.gov.ua/article/861292","https://cert.gov.ua/article/619229","https://cert.gov.ua/article/39882","https://cert.gov.ua/article/39708","https://cert.gov.ua/article/39609"]}
+{
+"description": "MS Office products drop suspicious files, such as scripts, portable executable files (.dll or .exe), and other file types commonly used to exploit vulnerabilities or perform post-exploitation activities through MS Office products.",
+"author": [
+"shahirahbar"
+],
+"enabled": true,
+"false_positives": [
+"medium. need to check user/office activity.",
+"need additional filtering."
+],
+"filters": [],
+"from": "now-360s",
+"immutable": false,
+"index": [
+"winlogbeat-*"
+],
+"interval": "5m",
+"rule_id": "ed8cb3fa-b30c-4f27-82ce-84899db4807c-eql",
+"language": "eql",
+"output_index": ".siem-signals-default",
+"max_signals": 100,
+"risk_score": 35,
+"name": "MS Office Drops Suspicious Files (via file_event)",
+"query": "any where (event.category : \"file\" and (process.executable : (\"*WINWORD.EXE\", \"*EXCEL.EXE\", \"*POWERPNT.EXE\", \"*MSPUB.EXE\", \"*VISIO.EXE\", \"*OUTLOOK.EXE\") and file.path : (\"*.library-ms\", \"*.msc\", \"*.rtf\", \"*.mdb\", \"*.accdb\", \"*.accde\", \"*.mmp\", \"*.rdp\", \"*.chm\", \"*.dot\", \"*.jse\", \"*.bat\", \"*.sct\", \"*.url\", \"*.cmd\", \"*.hta\", \"*.htm\", \"*.ps1\", \"*.js\", \"*.vbs\", \"*.dll\", \"*.exe\", \"*.one\", \"*.onepkg\", \"*.bz2\", \"*.gzip\", \"*.au3\")) and not (file.path : \"*\\\\AC\\\\Temp\\\\*\" and file.path : \"*\\\\Local\\\\Packages\\\\*\" or file.path : \"*SmartLookupCache*\" and file.path : \"*microsoft.office.smartlookup.ssr.js*\" or file.path : \"*INetCache*\" and file.path : \"*].js*\" or file.path : \"*Content*\" and file.path : \"*IE*\" and file.path : \"*].js*\" or file.path : (\"*\\\\~$*\", \"*\\\\Setup[1].exe*\", \"*NewOutlookInstall*\", \"*\\\\Temp\\\\OICE_*\", \"*INetCache\\\\Content.MSO*\", \"*\\\\Javascript\\\\*\", \"*\\\\assembly\\\\tmp\\\\*\", \"*Temp\\\\hpcUK*\", \"*\\\\EPSON*\")))",
+"meta": {
+"from": "1m"
+},
+"severity": "medium",
+"tags": [
+"Initial Access",
+"T1203",
+"T1566"
+],
+"to": "now",
+"type": "eql",
+"threat": [
+{
+"tactic": {
+"id": "TA0001",
+"reference": "https://attack.mitre.org/tactics/TA0001",
+"name": "Initial Access"
+},
+"framework": "MITRE ATT&CK",
+"technique": [
+{
+"id": "T1566",
+"name": "Phishing",
+"reference": "https://attack.mitre.org/techniques/T1566"
+}
+]
+},
+{
+"tactic": {
+"id": "TA0002",
+"reference": "https://attack.mitre.org/tactics/TA0002",
+"name": "Execution"
+},
+"framework": "MITRE ATT&CK",
+"technique": [
+{
+"id": "T1203",
+"name": "Exploitation for Client Execution",
+"reference": "https://attack.mitre.org/techniques/T1203"
+}
+]
+}
+],
+"version": 1,
+"references": [
+"https://cloud.google.com/blog/topics/threat-intelligence/windows-rogue-remote-desktop-protocol/",
+"https://github.com/Marcejr117/CVE-2025-24071_PoC",
+"https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2025-21298",
+"https://cert.gov.ua/article/6281076",
+"https://cert.gov.ua/article/6280159",
+"https://jp.security.ntt/tech_blog/controlplug",
+"https://app.any.run/tasks/80d106e5-c197-4afe-80d4-c3722fef3db4",
+"https://www.infosecurity-magazine.com/news/signature-techniques-of-asian-apt/",
+"https://research.checkpoint.com/2023/abusing-microsoft-access-linked-table-feature-to-perform-ntlm-forced-authentication-attacks/",
+"https://isc.sans.edu/diary/rss/30384",
+"https://cert.gov.ua/article/5628441",
+"https://twitter.com/sbousseaden/status/1216763679741530113",
+"https://success.trendmicro.com/dcx/s/solution/1123612-cve-2017-8570-vulnerability-downloads-high-profile-malware",
+"https://medium.com/@asmcybersecurity/cve-2017-8570-designates-a-security-flaw-found-in-microsoft-office-particularly-in-its-handling-of-cfc0d10cb233",
+"https://0xsp.com/offensive/navigating-embedded-payload-extraction-from-rdp-files-defence-evasion/",
+"https://cert.gov.ua/article/5391805",
+"https://cert.gov.ua/article/5098518",
+"https://cert.gov.ua/article/4905718",
+"https://news.sophos.com/en-us/2023/02/06/qakbot-onenote-attacks/",
+"https://www.trustedsec.com/blog/new-attacks-old-tricks-how-onenote-malware-is-evolving/",
+"https://www.rapid7.com/blog/post/2023/01/31/rapid7-observes-use-of-microsoft-onenote-to-spread-redline-infostealer-malware/",
+"https://cert.gov.ua/article/861292",
+"https://cert.gov.ua/article/619229",
+"https://cert.gov.ua/article/39882",
+"https://cert.gov.ua/article/39708",
+"https://cert.gov.ua/article/39609"
+]
+}
