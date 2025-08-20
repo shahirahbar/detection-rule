@@ -1,0 +1,22 @@
+[Suspicious IEdiagcmd Child Process (via cmdline)]
+alert.severity = 3
+description = Identifies unusual iediagcmd child process, which may be an indicator of malicious activity.
+cron_schedule = 0 * * * *
+disabled = 1
+is_scheduled = 1
+is_visible = 1
+dispatch.earliest_time = -60m@m
+dispatch.latest_time = now
+search = index=* source="WinEventLog:Security" AND EventCode=4688 AND ((ParentProcessName="*iediagcmd.exe" AND (NewProcessName="*route.exe" OR NewProcessName="*netsh.exe" OR NewProcessName="*ipconfig.exe" OR NewProcessName="*dxdiag.exe" OR NewProcessName="*conhost.exe" OR NewProcessName="*makecab.exe")) AND NOT (NewProcessName="*system32*" OR NewProcessName="*syswow64*"))
+alert.suppress = 0
+alert.track = 1
+actions = risk,notable
+action.risk = 1
+action.risk.param._risk_object_type = user
+action.risk.param._risk_score = 50
+action.correlationsearch = 0
+action.correlationsearch.enabled = 1
+action.notable.param.rule_title = Suspicious IEdiagcmd Child Process (via cmdline)
+action.notable.param.rule_description = Identifies unusual iediagcmd child process, which may be an indicator of malicious activity. (Rule ID: a00a0595-d9ac-41ac-bb33-49fc9bf17eff)
+action.correlationsearch.label = Suspicious IEdiagcmd Child Process (via cmdline)
+action.correlationsearch.annotations = {"mitre_attack": ["T1218"]}
